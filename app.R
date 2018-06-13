@@ -1,36 +1,32 @@
+# Librairies ----
 library(shiny)
 library(FactoMineR)
+library(factoextra)
 library(explor)
-#library(d3heatmap)
 
-height <- "800"
-
+# Import dataset ----
 data_table <- t(as.matrix(read.table("inputdata.tsv", header=TRUE, check.names=FALSE, row.names=1, sep="\t")))
-explor_data <- explor(PCA(data_table, graph=FALSE))
 
-# hobbies : data with 8403 rows (ind.) and 23 columns (hobbies).
-#data(hobbies)
-#res.mca <- MCA(hobbies,quali.sup=19:22,quanti.sup=23, graph = FALSE)
-#explor_mca <- explor(MCA(hobbies,quali.sup=19:22,quanti.sup=23, graph = FALSE))
-
-#data(decathlon)
-#res.pca <- PCA(decathlon[,1:12], quanti.sup = 11:12, graph = FALSE)
-#explor_pca <- explor(res.pca)
-
+# Build PCA ----
+pca_graph <- PCA(data_table, graph=FALSE)
+explor_data <- explor(pca_graph)
 
 # User interface ----
 ui <- fluidPage(
 	includeCSS("styles.css"),
 	fluidRow(
-		style = paste('margin:0px; height:', height, 'px', sep=''),
+#		plotOutput("pca")
 		explor_data
 	)
-
-#	d3heatmap(nba_players, scale = "column", dendrogram = "row", k_row = 3) #How to pass k_row in param for dynamic visualization
 )
 
 # Server logic ----
 server <- function(input, output) {
+
+#	output$pca <- renderUI({
+#		explor(pca_graph)
+#	})
+#	fviz_pca_var(pca_graph, col.var = "cos2", gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"))
 }
 
 # Run app ----
