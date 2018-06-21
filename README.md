@@ -10,4 +10,4 @@ This repository makes possible to run a Shiny application in a Galaxy Interactiv
 
 ## Visualization
 
-[](https://raw.githubusercontent.com/workflow4metabolomics/gie-shiny-pca/master/static/images/gie-shiny-pca-explor.png)
+![gie-shiny-pca-explor](https://github.com/RomainDallet/gie-shiny-pca/blob/master/static/images/gie-shiny-pca-explor.png)
