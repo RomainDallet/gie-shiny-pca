@@ -1,5 +1,7 @@
 # Librairies ----
 library(shiny)
+library(shinydashboard)
+library(shinyWidgets)
 library(FactoMineR)
 library(factoextra)
 library(explor)
@@ -7,27 +9,34 @@ library(explor)
 # Import dataset ----
 data_table <- t(as.matrix(read.table("inputdata.tsv", header=TRUE, check.names=FALSE, row.names=1, sep="\t")))
 
+samples_metadata_name<-"samples_metadata.csv"
+samples_metadata_file<-gx_get(samples_metadata_name, identifier_type='name')
+samples_metadata <- as.matrix(read.csv(samples_metadata_file, header=TRUE, check.names=FALSE, row.names=1, sep="\t"))
+
+final_table<-cbind.data.frame(data_table,samples_metadata)
+
+
 # Build PCA ----
-pca_graph <- PCA(data_table, graph=FALSE)
+pca_graph <- PCA(final_table, quali.sup=(ncol(final_table)-ncol(samples_metadata)+1):ncol(final_table), graph=FALSE, scale.unit=TRUE)
 explor_data <- explor(pca_graph)
 
+
 # User interface ----
-ui <- fluidPage(
-	includeCSS("styles.css"),
-	fluidRow(
-#		plotOutput("pca")
-		explor_data
+ui <- dashboardPage(
+	dashboardHeader(title="Shiny PCA"),
+	dashboardSidebar(
+		collapsed = TRUE
+	),
+	dashboardBody(
+		includeCSS("styles.css"),
+		fluidRow(
+			explor_data
+		)
 	)
 )
 
 # Server logic ----
-server <- function(input, output) {
-
-#	output$pca <- renderUI({
-#		explor(pca_graph)
-#	})
-#	fviz_pca_var(pca_graph, col.var = "cos2", gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"))
-}
+server <- function(input, output) {}
 
 # Run app ----
 shinyApp(ui, server)
