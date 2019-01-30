@@ -9,6 +9,7 @@ library(explor)
 # Import dataset ----
 data_table <- t(as.matrix(read.table("inputdata.tsv", header=TRUE, check.names=FALSE, row.names=1, sep="\t")))
 
+# TODO : Dynamically import samples metadata file
 samples_metadata_name<-"samples_metadata.csv"
 samples_metadata_file<-gx_get(samples_metadata_name, identifier_type='name')
 samples_metadata <- as.matrix(read.csv(samples_metadata_file, header=TRUE, check.names=FALSE, row.names=1, sep="\t"))
