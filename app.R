@@ -13,8 +13,9 @@ data_table <- t(as.matrix(read.table("inputdata.tsv", header=TRUE, check.names=F
 samples_metadata_name<-"samples_metadata.csv"
 samples_metadata_file<-gx_get(samples_metadata_name, identifier_type='name')
 samples_metadata <- as.matrix(read.csv(samples_metadata_file, header=TRUE, check.names=FALSE, row.names=1, sep="\t"))
+samples_metadata <- subset(samples_metadata, rownames(samples_metadata) %in% rownames(data_table))
 
-final_table<-cbind.data.frame(data_table,samples_metadata)
+final_table<-data.frame(merge(data_table,samples_metadata, by="row.names"), row.names=1)
 
 
 # Build PCA ----
